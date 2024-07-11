@@ -1,5 +1,7 @@
 import pandas as pd
 import constants
+import json
+from jsonschema import validate, ValidationError
 
 # Class Name: String
 # Grades: String (Will convert to list)
@@ -69,6 +71,8 @@ class VistaClass:
 
 class VistaClassHelper:
 
+
+
     @staticmethod
     def convert_data(data):    
         vista_class_list = []
@@ -86,6 +90,26 @@ class VistaClassHelper:
         
         df = pd.DataFrame(new_list)
         return df
+    
+    @staticmethod
+    def convert_to_dictlist(data):
+        new_list = []
+        count = 1
+        for i in data:
+            new_list.append({"id": count, "name": i.get_name(), "grades": i.get_grades(), "weight": i.get_is_weighted(), "threeyr": i.get_third_year_req(), "ucag": i.get_ucreq(), "prereq": i.get_prerequisites(), "catcode": i.get_class_code(), "rigor": i.get_rigor(), "hw": i.get_hw_time()})
+            count +=1
+        return new_list
+    
+    
+    schema = {
+    "type": "object",
+    "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "number"},
+        "grades": {"type": "number"},
+    },
+    "required": ["name", "age"]
+    }
 
 class VistaClassLookup:
 
@@ -97,13 +121,16 @@ class VistaClassLookup:
             # Use the provided DataFrame
             self.df = df
 
-        self.easy_df = VistaClassHelper.convert_data(self.df.to_dict(orient="records"))
+        self.easy_df = VistaClassHelper.convert_data(self.df.fillna('null').to_dict(orient="records"))
 
     def print_db(self):
         print(self.df)
 
     def print_dict(self):
         print(self.easy_df)
+
+    def get_json_string(self):
+        return json.dumps(VistaClassHelper.convert_to_dictlist(self.easy_df))
 
     # Returns a list of VistaClass Objects
     def get_classes_by_category(self, category:str):
@@ -135,11 +162,11 @@ class VistaClassLookup:
         return VistaClassHelper.convert_data(sorted_df.to_dict(orient='records'))
 
 
-clown = VistaClassLookup()
-gang = (clown.get_classes_by_grade(9))
-slime = VistaClassLookup(VistaClassHelper.convert_to_df(gang))
-for i in slime.sort_classes_by_rigor(False):
-    print(f"Name: {i.get_name()}, Rigor: {i.get_rigor()}")
+# clown = VistaClassLookup()
+# gang = (clown.get_classes_by_grade(9))
+# slime = VistaClassLookup(VistaClassHelper.convert_to_df(gang))
+# for i in slime.sort_classes_by_rigor(False):
+#     print(f"Name: {i.get_name()}, Rigor: {i.get_rigor()}")
 
 
 

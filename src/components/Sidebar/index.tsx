@@ -46,8 +46,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Dashboard",
-        route: "#",
-        children: [{ label: "eCommerce", route: "/" }],
+        route: "/"
       },
       {
         icon: (
@@ -65,8 +64,8 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Calendar",
-        route: "/calendar",
+        label: "Course Catalog",
+        route: "/course-catalog",
       },
       {
         icon: (
@@ -88,8 +87,8 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Profile",
-        route: "/profile",
+        label: "Club Catalog",
+        route: "/club-catalog",
       },
       {
         icon: (
@@ -123,12 +122,8 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Forms",
-        route: "#",
-        children: [
-          { label: "Form Elements", route: "/forms/form-elements" },
-          { label: "Form Layout", route: "/forms/form-layout" },
-        ],
+        label: "Grad Requirements",
+        route: "/graduation-requirements",
       },
       {
         icon: (
@@ -158,8 +153,8 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Tables",
-        route: "/tables",
+        label: "Four-Year Plan",
+        route: "/course-generator",
       },
       {
         icon: (
@@ -193,8 +188,8 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Settings",
-        route: "/settings",
+        label: "Additional Info",
+        route: "/additional-info",
       },
     ],
   },
@@ -233,8 +228,8 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Chart",
-        route: "/chart",
+        label: "Vista AI Bot",
+        route: "/chatbot-help",
       },
       {
         icon: (
@@ -272,12 +267,12 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "UI Elements",
-        route: "#",
-        children: [
-          { label: "Alerts", route: "/ui/alerts" },
-          { label: "Buttons", route: "/ui/buttons" },
-        ],
+        label: "Login",
+        route: "/auth/signin",
+        // children: [
+        //   { label: "Alerts", route: "/ui/alerts" },
+        //   { label: "Buttons", route: "/ui/buttons" },
+        // ],
       },
       {
         icon: (
@@ -311,12 +306,9 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Authentication",
-        route: "#",
-        children: [
-          { label: "Sign In", route: "/auth/signin" },
-          { label: "Sign Up", route: "/auth/signup" },
-        ],
+        // handle this
+        label: "View Vista Page",
+        route: "https://chatgpt.com/c/3f588dc2-5af1-4b5d-adb4-857396b05007",
       },
     ],
   },
@@ -334,12 +326,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         }`}
       >
         {/* <!-- SIDEBAR HEADER --> */}
-        <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+        <div className="flex items-center justify-between gap-2 px-15 mt-7.5 lg:mt-8.5 w-full">
           <Link href="/">
             <Image
               width={176}
               height={32}
-              src={"/images/logo/logo.svg"}
+              src={"/images/logo/vista-catalog.png"}
               alt="Logo"
               priority
             />

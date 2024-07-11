@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from utilities import init_curs
 from user_util import User
+from class_util import VistaClassLookup
 
 app = Flask(__name__)
 CORS(app)
@@ -30,6 +31,12 @@ def get_header_data():
     print(request.json)
     user = User((request.json)['token'])
     return user.get_header_data()
+
+@app.route("/api/get-classes-list", methods=['GET'])
+def get_classes_list():
+    class_list = VistaClassLookup()
+    print(class_list.get_json_string())
+    return jsonify(class_list.get_json_string())
 
 
 if __name__ == '__main__':
