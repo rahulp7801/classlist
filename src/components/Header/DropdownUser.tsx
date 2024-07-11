@@ -1,10 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "@/components/ClickOutside";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Example function to fetch user data from backend
+    const token = JSON.parse(localStorage.getItem('user'));
+
+    if (!token) {
+      console.error("User data is missing from localStorage.");
+      return;
+    }
+
+    
+
+    const fetchUserData = async () => {
+      try {
+        // Replace with actual API endpoint URL
+        const response = await fetch('http://localhost:5000/api/get-header-data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token }),
+        });
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData);
+        } else {
+          console.error('Failed to fetch user data');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -13,25 +50,52 @@ const DropdownUser = () => {
         className="flex items-center gap-4"
         href="#"
       >
-        <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
-          </span>
-          <span className="block text-xs">UX Designer</span>
-        </span>
+        {user ? (
+          <>
+            <span className="hidden text-right lg:block">
+              <span className="block text-sm font-medium text-black dark:text-white">
+                {user.username}
+              </span>
+              <span className="block text-xs">{user.email}</span>
+            </span>
 
-        <span className="h-12 w-12 rounded-full">
-          <Image
-            width={112}
-            height={112}
-            src={"/images/user/user-01.png"}
-            style={{
-              width: "auto",
-              height: "auto",
-            }}
-            alt="User"
-          />
-        </span>
+            <span className="h-12 w-12 rounded-full">
+              <Image
+                width={112}
+                height={112}
+                src={user.photoURL}
+                style={{
+                  width: "auto",
+                  height: "auto",
+                  borderRadius: "30px",
+                }}
+                alt="User"
+              />
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="hidden text-right lg:block">
+              <span className="block text-sm font-medium text-black dark:text-white">
+                Unknown User
+              </span>
+              <span className="block text-xs">unknownuser@unknown.mail</span>
+            </span>
+
+            <span className="h-12 w-12 rounded-full">
+              <Image
+                width={112}
+                height={112}
+                src={"/images/user/user-01.png"}
+                style={{
+                  width: "auto",
+                  height: "auto",
+                }}
+                alt="User"
+              />
+            </span>
+          </>
+        )}
 
         <svg
           className="hidden fill-current sm:block"

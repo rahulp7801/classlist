@@ -1,22 +1,61 @@
+"use client";
+// src/app/auth/signin/page.tsx
+
+import { useRouter } from 'next/navigation';
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { signInWithGoogle } from '@/lib/firebase';
 
-export const metadata: Metadata = {
-  title: "Next.js SignIn Page | TailAdmin - Next.js Dashboard Template",
-  description: "This is Next.js Signin Page TailAdmin Dashboard Template",
-};
+
 
 const SignIn: React.FC = () => {
+
+  const router = useRouter();
+  const handleLogin = async (event:React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+    console.warn("helllo here");
+    try {
+
+    const {user} = await signInWithGoogle();
+    const userData = {
+      photoURL: user.photoURL,
+      displayName: user.displayName,
+      email: user.email,
+      uid: user.uid
+    };
+    const res = await fetch('http://localhost:5000/api/login-google', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    localStorage.setItem('user', JSON.stringify(userData));
+
+
+    const result = await res.json();
+    console.log(result);
+    router.push('/chart');
+  } catch (error) {
+    console.error("Login failed", error);
+  }
+    
+
+  }
   return (
-    <DefaultLayout>
+    <DefaultLayout >
       <Breadcrumb pageName="Sign In" />
 
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="flex flex-wrap items-center">
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mb-6.5">
+        <div className="flex flex-wrap items-center mb-5 ">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
               <Link className="mb-5.5 inline-block" href="/">
@@ -248,7 +287,7 @@ const SignIn: React.FC = () => {
                   />
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                <button onClick={handleLogin} className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                   <span>
                     <svg
                       width="20"
