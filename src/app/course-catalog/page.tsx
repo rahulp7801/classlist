@@ -128,7 +128,7 @@ export default function App() {
 
         return (
           <User
-            avatarProps={{radius: "lg", src: ""}}
+          avatarProps={user.id}
             // description={user.prereq}
             name={cellValue}
           >
@@ -329,7 +329,7 @@ export default function App() {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Course Catalog" />
-      <div className="gap-2 grid grid-cols-12 grid-rows-2 px-8 mb-5">
+      <div className="gap-2 grid grid-cols-12 grid-rows-2 px-8 mb-15">
 
     <Card isPressable className="col-span-12 sm:col-span-4 h-[300px]" onPress={handlePress}>
 
@@ -417,7 +417,7 @@ export default function App() {
 </Card>
     
   </div>
-
+<div className={"p-5"} style={{backgroundColor: 'rgb(1, 1, 1)', borderRadius: '20px'}}>
     <Table
       isCompact
       aria-label="Table of Vista Classes"
@@ -425,15 +425,17 @@ export default function App() {
       bottomContent={bottomContent}
       bottomContentPlacement="inside"
       classNames={{
-        wrapper: "max-h-[382px]",
+        wrapper: "align-left w-full",
       }}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
       sortDescriptor={sortDescriptor}
       topContent={topContent}
       topContentPlacement="inside"
       onSelectionChange={setSelectedKeys}
       onSortChange={setSortDescriptor}
+      style={{
+        backgroundColor:'rgb(39,39,42)',
+         borderRadius: '20px'
+      }}
     >
       <TableHeader columns={headerColumns} >
         {(column) => (
@@ -442,22 +444,24 @@ export default function App() {
             align={"start"}
             allowsSorting={column.sortable}
             style={{ textAlign: 'left' }} // Inline style for additional enforcement
+            className={"m-2"}
 
           >
             {column.name}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No classes found"} items={sortedItems}>
+      <TableBody emptyContent={"No classes found"} items={sortedItems} style={{borderRadius: "20px"}}>
         {(item) => {
           console.info("ITEM: ", item) 
           return(
           <TableRow key={item.id}>
-            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+            {(columnKey) => <TableCell className={"p-3"} style={{backgroundColor: "rgb(24, 24, 27)"}}>{renderCell(item, columnKey)}</TableCell>}
           </TableRow>
         )}}
       </TableBody>
     </Table>
+    </div>
     </DefaultLayout>
   );
 }
