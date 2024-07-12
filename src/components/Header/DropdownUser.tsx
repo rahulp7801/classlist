@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "@/components/ClickOutside";
@@ -8,6 +8,25 @@ const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
   const router = useRouter();
+  const currentPathname = usePathname();
+
+
+  const handleLogOut = () => {
+  
+    // Remove user data from localStorage
+    localStorage.removeItem("user");
+    console.warn(currentPathname);
+    // Check if the current route is already `/auth/signin`
+    // Refresh the page using router.reload() for a controlled refresh
+    if(currentPathname != "/auth/signin") {
+      router.push('/auth/signin');
+      router.refresh()
+    } else {
+      window.location.reload();
+    }
+
+
+  };
 
 
   useEffect(() => {
@@ -45,10 +64,7 @@ const DropdownUser = () => {
     fetchUserData();
   }, []);
 
-  const handleLogOut = () => {
-    localStorage.removeItem("user");
-    router.push('/auth/signin');
-  }
+  
 
 
   return (

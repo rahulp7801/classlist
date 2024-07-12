@@ -43,7 +43,7 @@ const SignIn: React.FC = () => {
 
     const result = await res.json();
     console.log(result);
-    router.push('/chart');
+    router.push('/');
   } catch (error) {
     console.error("Login failed", error);
   }
