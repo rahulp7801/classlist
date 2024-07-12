@@ -6,7 +6,7 @@ const DarkModeSwitcher = () => {
   return (
     <li>
       <label
-        className={`relative m-0 block h-7.5 w-14 rounded-full ${
+        className={`hidden relative m-0 block h-7.5 w-14 rounded-full ${
           colorMode === "dark" ? "bg-primary" : "bg-stroke"
         }`}
       >
@@ -14,7 +14,7 @@ const DarkModeSwitcher = () => {
           type="checkbox"
           onChange={() => {
             if (typeof setColorMode === "function") {
-              setColorMode(colorMode === "light" ? "dark" : "light");
+              setColorMode(colorMode === "dark" ? "light" : "dark");
             }
           }}
           className="dur absolute top-0 z-50 m-0 h-full w-full cursor-pointer opacity-0"
